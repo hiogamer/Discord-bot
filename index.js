@@ -23,7 +23,6 @@ const client = new Client({
   ]
 });
 
-// Define all custom slash commands
 const commands = [
   new SlashCommandBuilder()
     .setName('build')
@@ -37,7 +36,7 @@ const commands = [
     .setName('roll')
     .setDescription('Rolls a 6-sided dice (or custom sides)')
     .addIntegerOption(option => 
-      option.setName('sides').setDescription('Number of sides (default 6)').required(false)),
+      option.setName('sides').setDescription('Number of sides (default 6)').setRequired(false)),
 
   new SlashCommandBuilder()
     .setName('flip')
@@ -47,7 +46,7 @@ const commands = [
     .setName('8ball')
     .setDescription('Ask the Magic 8-Ball a question')
     .addStringOption(option => 
-      option.setName('question').setDescription('Your question').required(true)),
+      option.setName('question').setDescription('Your question').setRequired(true)),
 
   new SlashCommandBuilder()
     .setName('joke')
@@ -57,13 +56,13 @@ const commands = [
     .setName('avatar')
     .setDescription('Shows a user profile picture')
     .addUserOption(option => 
-      option.setName('user').setDescription('The user to check').required(false)),
+      option.setName('user').setDescription('The user to check').setRequired(false)),
 
   new SlashCommandBuilder()
     .setName('clear')
     .setDescription('Deletes a number of messages from the channel')
     .addIntegerOption(option => 
-      option.setName('amount').setDescription('Number of messages to clear (1-99)').required(true)),
+      option.setName('amount').setDescription('Number of messages to clear (1-99)').setRequired(true)),
 
   new SlashCommandBuilder()
     .setName('rps')
@@ -91,10 +90,7 @@ client.once('ready', async () => {
   }
 });
 
-// Handle Slash Commands, Modals, and Buttons
 client.on('interactionCreate', async interaction => {
-  
-  // 1. Handle Slash Commands
   if (interaction.isChatInputCommand()) {
     const { commandName } = interaction;
 
@@ -226,7 +222,6 @@ client.on('interactionCreate', async interaction => {
     }
   }
 
-  // 2. Handle Modal Submits (Game Builder)
   else if (interaction.isModalSubmit()) {
     if (interaction.customId === 'gameBuilderModal') {
       const title = interaction.fields.getTextInputValue('gameTitle');
@@ -243,7 +238,6 @@ client.on('interactionCreate', async interaction => {
     }
   }
 
-  // 3. Handle Button Interactions (RPS & Trivia)
   else if (interaction.isButton()) {
     if (interaction.customId.startsWith('rps_')) {
       const userChoice = interaction.customId.replace('rps_', '');
